@@ -1,0 +1,6 @@
+*.suo
+*.user
+**/bin/
+**/obj/
+TestResults/
+packages/*[!c][!o][!n][!f][!i][!g]

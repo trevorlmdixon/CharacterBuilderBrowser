@@ -1,0 +1,48 @@
+﻿<Window x:Class="CharacterBuilderBrowser.MainWindow"
+	   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	   xmlns:cbb="clr-namespace:CharacterBuilderBrowser"
+	   Title="Character Builder Browser"
+	   Height="600" Width="800"
+	   DataContext="{Binding RelativeSource={RelativeSource Self}}">
+	<DockPanel>
+		<DockPanel DockPanel.Dock="Top">
+			<Label DockPanel.Dock="Left" Content="Filter:">
+				<Label.Background>
+					<SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ActiveCaptionColorKey}}"/>
+				</Label.Background>
+			</Label>
+			<Label DockPanel.Dock="Right">
+				<Label.Content>
+					<TextBlock>
+						<TextBlock.Text>
+							<MultiBinding StringFormat="{}Displaying {0} of {1}">
+								<Binding Path="RulesElementsView.Count" />
+								<Binding Path="AllElements.Count" Source="{x:Static cbb:RulesElementsRepository.Instance}" />
+							</MultiBinding>
+						</TextBlock.Text>
+					</TextBlock>
+				</Label.Content>
+				<Label.Background>
+					<SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ActiveCaptionColorKey}}"/>
+				</Label.Background>
+			</Label>
+			<TextBox Text="{Binding FilterText,UpdateSourceTrigger=PropertyChanged}" TextChanged="ApplyElementsFilter" />
+		</DockPanel>
+		<DataGrid ItemsSource="{Binding RulesElementsView}"
+				IsReadOnly="True"
+				AutoGenerateColumns="False"
+				HeadersVisibility="Column"
+				AlternatingRowBackground="Gainsboro"
+				AlternationCount="2"
+				SelectionMode="Single"
+				MouseDoubleClick="ViewElementDetails">
+			<DataGrid.Columns>
+				<DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" />
+				<DataGridTextColumn Header="Type" Binding="{Binding ElementType}" Width="Auto" />
+				<DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="*" />
+				<DataGridTextColumn Header="Source" Binding="{Binding Source}" Width="*" />
+			</DataGrid.Columns>
+		</DataGrid>
+	</DockPanel>
+</Window>
