@@ -16,5 +16,11 @@ namespace CharacterBuilderBrowser
 				Shutdown();
 			}
 		}
+
+		protected override void OnExit(ExitEventArgs e)
+		{
+			RulesElementsRepository.Instance.Dispose();
+			base.OnExit(e);
+		}
 	}
 }

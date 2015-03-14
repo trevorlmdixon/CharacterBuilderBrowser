@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
@@ -17,7 +18,7 @@ namespace CharacterBuilderBrowser
 		private ICollectionView rulesElementsView;
 		public ICollectionView RulesElementsView { get { return rulesElementsView; } }
 
-		private string[] filterWords;
+		private ISet<string> filterIds;
 		public string FilterText { get; set; }
 
 		public MainWindow()
@@ -34,7 +35,7 @@ namespace CharacterBuilderBrowser
 			}
 			else
 			{
-				filterWords=FilterText.ToUpperInvariant().Split((char[])null,StringSplitOptions.RemoveEmptyEntries);
+				filterIds=RulesElementsRepository.Instance.Search(FilterText);
 				rulesElementsView.Filter=FilterElements;
 			}
 		}
@@ -43,8 +44,7 @@ namespace CharacterBuilderBrowser
 		{
 			var element=obj as RulesElement;
 			if(element==null) return false;
-			var elementName=element.Name.ToUpperInvariant();
-			return filterWords.All(word => elementName.Contains(word));
+			return filterIds.Contains(element.Id);
 		}
 
 		private void ViewElementDetails(object sender,MouseButtonEventArgs e)

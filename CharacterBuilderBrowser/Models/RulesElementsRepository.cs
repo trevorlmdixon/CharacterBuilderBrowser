@@ -5,10 +5,16 @@ using System.Linq;
 using System.Threading;
 using System.Xml;
 using System.Xml.Serialization;
+using Lucene.Net.Analysis.Standard;
+using Lucene.Net.Index;
+using Lucene.Net.Store;
+using Lucene.Net.Documents;
+using Lucene.Net.Search;
+using Lucene.Net.QueryParsers;
 
 namespace CharacterBuilderBrowser
 {
-	public class RulesElementsRepository
+	public class RulesElementsRepository:IDisposable
 	{
 		#region Singleton
 
@@ -36,6 +42,8 @@ namespace CharacterBuilderBrowser
 
 		#endregion
 
+		private Lucene.Net.Store.Directory rulesElementIndex;
+
 		private D20Rules rules;
 		public IEnumerable<RulesElement> AllElements { get { return rules.RulesElements; } }
 
@@ -61,6 +69,16 @@ namespace CharacterBuilderBrowser
 						try
 						{
 							rules=(D20Rules)xs.Deserialize(xmlReader);
+
+							rulesElementIndex=new RAMDirectory();
+							using(var indexWriter=new IndexWriter(rulesElementIndex,new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_30),IndexWriter.MaxFieldLength.LIMITED))
+							{
+								foreach(var element in rules.RulesElements)
+								{
+									indexWriter.Add(element);
+								}
+								indexWriter.Optimize();
+							}
 						}
 						catch(InvalidOperationException)
 						{
@@ -80,6 +98,26 @@ namespace CharacterBuilderBrowser
 		public RulesElement GetRulesElement(string id)
 		{
 			return allElementsDictionary.Value[id];
+		}
+
+		public void Dispose()
+		{
+			rulesElementIndex.Dispose();
+		}
+
+		public ISet<string> Search(string searchText)
+		{
+			using(var searcher=new IndexSearcher(rulesElementIndex))
+			{
+				QueryParser parser;
+				using(var reader=IndexReader.Open(rulesElementIndex,true))
+				{
+					parser=new MultiFieldQueryParser(Lucene.Net.Util.Version.LUCENE_30,reader.GetFieldNames(IndexReader.FieldOption.ALL).ToArray(),new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_30));
+				}
+				var result=searcher.Search<RulesElement>(parser.Parse(searchText),1000);
+				var elements=result.ScoreDocs.Select(sd => searcher.Doc(sd.Doc).ToObject<RulesElement>().Id);
+				return new HashSet<string>(elements);
+			}
 		}
 	}
 }
