@@ -22,13 +22,34 @@ namespace CharacterBuilderBrowser
 
 		private RulesElementSeacher searcher;
 		private IDictionary<RulesElement,int> searchResults;
-		public string FilterText { get; set; }
+		private string filterText;
 
 		public MainWindow(RulesElementSeacher searcher)
 		{
 			RulesElementsView=CollectionViewSource.GetDefaultView(Repository.AllElements) as ListCollectionView;
 			this.searcher=searcher;
 			InitializeComponent();
+		}
+
+		public string FilterText
+		{
+			get { return filterText; }
+			set
+			{
+				if(filterText==value) return;
+				filterText=value;
+				if(string.IsNullOrWhiteSpace(FilterText))
+				{
+					RulesElementsView.Filter=null;
+					RulesElementsView.CustomSort=null;
+				}
+				else
+				{
+					searchResults=searcher.Search(FilterText);
+					RulesElementsView.Filter=FilterElements;
+					RulesElementsView.CustomSort=new RulesElementScoreSorter(searchResults);
+				}
+			}
 		}
 
 		private void ApplyElementsFilter(object sender,TextChangedEventArgs e)

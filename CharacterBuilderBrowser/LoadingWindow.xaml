@@ -4,7 +4,8 @@
         Title="Loading..."
 	   Height="75"
 	   Width="300"
-	   ResizeMode="NoResize">
+	   ResizeMode="NoResize"
+	   WindowStartupLocation="CenterScreen">
 	<DockPanel>
 		<Label Name="StatusText"></Label>
 	</DockPanel>
