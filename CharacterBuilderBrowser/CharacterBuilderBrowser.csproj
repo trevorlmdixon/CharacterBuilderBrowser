@@ -95,11 +95,19 @@
     </ApplicationDefinition>
     <Compile Include="Extensions\RichTextBoxExtensions.cs" />
     <Compile Include="Extensions\RulesElementIdHyperlinkConverter.cs" />
+    <Compile Include="LoadingWindow.xaml.cs">
+      <DependentUpon>LoadingWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\RulesElement.cs" />
+    <Compile Include="Models\RulesElementSeacher.cs" />
     <Compile Include="Models\RulesElementsRepository.cs" />
     <Compile Include="DetailsWindows\RulesElementDetailsWindow.xaml.cs">
       <DependentUpon>RulesElementDetailsWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="LoadingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

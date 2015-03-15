@@ -1,26 +1,47 @@
-﻿using System.Windows;
+﻿using System;
+using System.IO;
+using System.Threading.Tasks;
+using System.Windows;
 
 namespace CharacterBuilderBrowser
 {
 	/// <summary>
 	/// Interaction logic for App.xaml
 	/// </summary>
-	public partial class App:Application
+	public partial class Browser:Application
 	{
-		protected override void OnStartup(StartupEventArgs e)
+		private RulesElementsRepository repository;
+		public RulesElementsRepository Repository { get { return repository; } }
+
+		internal async Task Initialize(LoadingWindow loadingWindow)
 		{
-			base.OnStartup(e);
-			if(RulesElementsRepository.Instance==null)
+			try
 			{
-				MessageBox.Show("Could not load Character Builder data. Program will now exit.","Error",MessageBoxButton.OK,MessageBoxImage.Error);
-				Shutdown();
+				loadingWindow.SetStatusText("Loading rule elements...");
+				await Task.Factory.StartNew(() => repository=RulesElementsRepository.Create());
 			}
+			catch(IOException)
+			{
+				ShowErrorAndShutdown();
+			}
+			catch(InvalidOperationException)
+			{
+				ShowErrorAndShutdown();
+			}
+
+			loadingWindow.SetStatusText("Creating Lucene Index...");
+			RulesElementSeacher searcher=null;
+			await Task.Factory.StartNew(() => searcher=RulesElementSeacher.Create(repository));
+
+			var mainWindow=new MainWindow(searcher);
+			this.MainWindow=mainWindow;
+			mainWindow.Show();
 		}
 
-		protected override void OnExit(ExitEventArgs e)
+		private void ShowErrorAndShutdown()
 		{
-			RulesElementsRepository.Instance.Dispose();
-			base.OnExit(e);
+			MessageBox.Show("Could not load Character Builder data. Program will now exit.","Error",MessageBoxButton.OK,MessageBoxImage.Error);
+			Application.Current.Shutdown();
 		}
 	}
 }

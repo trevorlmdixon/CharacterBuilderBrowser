@@ -25,16 +25,17 @@ namespace CharacterBuilderBrowser
 				var runStr=runs[i];
 				if(i%2==1)
 				{
-					var element=RulesElementsRepository.Instance.GetRulesElement(runStr);
-					var link=new Hyperlink(new Run(element.Name));
-					link.Tag=element;
-					link.Click+=OpenRulesElementDetails;
-					span.Inlines.Add(link);
+					var element=((Browser)Application.Current).Repository.GetRulesElement(runStr);
+					if(element!=null)
+					{
+						var link=new Hyperlink(new Run(element.Name));
+						link.Tag=element;
+						link.Click+=OpenRulesElementDetails;
+						span.Inlines.Add(link);
+						continue;
+					}
 				}
-				else
-				{
-					span.Inlines.Add(new Run(runStr));
-				}
+				span.Inlines.Add(new Run(runStr));
 			}
 			
 			return span;
@@ -49,8 +50,7 @@ namespace CharacterBuilderBrowser
 		{
 			var link=sender as Hyperlink;
 			if(link==null) return;
-			var details=new RulesElementDetailsWindow((RulesElement)link.Tag);
-			details.Show();
+			RulesElementDetailsWindow.Show((RulesElement)link.Tag);
 		}
 	}
 }

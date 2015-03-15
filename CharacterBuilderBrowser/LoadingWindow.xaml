@@ -1,0 +1,11 @@
+﻿<Window x:Class="CharacterBuilderBrowser.LoadingWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Loading..."
+	   Height="75"
+	   Width="300"
+	   ResizeMode="NoResize">
+	<DockPanel>
+		<Label Name="StatusText"></Label>
+	</DockPanel>
+</Window>

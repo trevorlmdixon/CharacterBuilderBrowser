@@ -23,5 +23,11 @@ namespace CharacterBuilderBrowser
 			this.Element=element;
 			InitializeComponent();
 		}
+
+		public static void Show(RulesElement element)
+		{
+			var window=new RulesElementDetailsWindow(element);
+			window.Show();
+		}
 	}
 }

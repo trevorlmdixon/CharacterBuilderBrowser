@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -15,15 +16,18 @@ namespace CharacterBuilderBrowser
 {
 	public partial class MainWindow:Window
 	{
-		private ICollectionView rulesElementsView;
-		public ICollectionView RulesElementsView { get { return rulesElementsView; } }
+		public RulesElementsRepository Repository { get { return ((Browser)Application.Current).Repository; } }
 
-		private ISet<string> filterIds;
+		public ListCollectionView RulesElementsView { get; private set; }
+
+		private RulesElementSeacher searcher;
+		private IDictionary<RulesElement,int> searchResults;
 		public string FilterText { get; set; }
 
-		public MainWindow()
+		public MainWindow(RulesElementSeacher searcher)
 		{
-			rulesElementsView=CollectionViewSource.GetDefaultView(RulesElementsRepository.Instance.AllElements);
+			RulesElementsView=CollectionViewSource.GetDefaultView(Repository.AllElements) as ListCollectionView;
+			this.searcher=searcher;
 			InitializeComponent();
 		}
 
@@ -31,12 +35,14 @@ namespace CharacterBuilderBrowser
 		{
 			if(string.IsNullOrWhiteSpace(FilterText))
 			{
-				rulesElementsView.Filter=null;
+				RulesElementsView.Filter=null;
+				RulesElementsView.CustomSort=null;
 			}
 			else
 			{
-				filterIds=RulesElementsRepository.Instance.Search(FilterText);
-				rulesElementsView.Filter=FilterElements;
+				searchResults=searcher.Search(FilterText);
+				RulesElementsView.Filter=FilterElements;
+				RulesElementsView.CustomSort=new RulesElementScoreSorter(searchResults);
 			}
 		}
 
@@ -44,7 +50,7 @@ namespace CharacterBuilderBrowser
 		{
 			var element=obj as RulesElement;
 			if(element==null) return false;
-			return filterIds.Contains(element.Id);
+			return searchResults.ContainsKey(element);
 		}
 
 		private void ViewElementDetails(object sender,MouseButtonEventArgs e)
@@ -53,8 +59,26 @@ namespace CharacterBuilderBrowser
 			if(grid==null) return;
 			var element=grid.SelectedItem as RulesElement;
 			if(element==null) return;
-			var details=new RulesElementDetailsWindow(element);
-			details.Show();
+			RulesElementDetailsWindow.Show(element);
+		}
+
+		private class RulesElementScoreSorter:IComparer
+		{
+			private IDictionary<RulesElement,int> scores;
+
+			public RulesElementScoreSorter(IDictionary<RulesElement,int> scores)
+			{
+				this.scores=scores;
+			}
+
+			public int Compare(object x,object y)
+			{
+				var elementX=x as RulesElement;
+				var elementY=y as RulesElement;
+				var xScore=scores.ContainsKey(elementX)?scores[elementX]:0;
+				var yScore=scores.ContainsKey(elementY)?scores[elementY]:0;
+				return yScore-xScore;
+			}
 		}
 	}
 }

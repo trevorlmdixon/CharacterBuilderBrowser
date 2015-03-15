@@ -18,7 +18,7 @@
 						<TextBlock.Text>
 							<MultiBinding StringFormat="{}Displaying {0} of {1}">
 								<Binding Path="RulesElementsView.Count" />
-								<Binding Path="AllElements.Count" Source="{x:Static cbb:RulesElementsRepository.Instance}" />
+								<Binding Path="Repository.AllElements.Count" />
 							</MultiBinding>
 						</TextBlock.Text>
 					</TextBlock>

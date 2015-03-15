@@ -55,6 +55,21 @@ namespace CharacterBuilderBrowser
 		{
 			return Name;
 		}
+
+		public override bool Equals(object obj)
+		{
+			var element=obj as RulesElement;
+			if(element!=null)
+			{
+				return element.Id==this.Id;
+			}
+			return false;
+		}
+
+		public override int GetHashCode()
+		{
+			return Id.GetHashCode();
+		}
 	}
 
 	public class SpecificRule
