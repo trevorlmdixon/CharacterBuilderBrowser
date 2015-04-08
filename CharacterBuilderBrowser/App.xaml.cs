@@ -1,7 +1,8 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
+using Microsoft.Practices.Unity;
 
 namespace CharacterBuilderBrowser
 {
@@ -10,32 +11,40 @@ namespace CharacterBuilderBrowser
 	/// </summary>
 	public partial class Browser:Application
 	{
-		private RulesElementsRepository repository;
-		public RulesElementsRepository Repository { get { return repository; } }
-
-		internal async Task Initialize(LoadingWindow loadingWindow)
+		protected override void OnStartup(StartupEventArgs e)
 		{
-			try
+			var container=new UnityContainer();
+			container.RegisterType<IRulesElementRepository>(new ContainerControlledLifetimeManager(),new InjectionFactory(c => FileRulesElementsRepository.Create()));
+			container.RegisterType<IRulesElementSearcher>(new ContainerControlledLifetimeManager(),new InjectionFactory(c => LuceneRulesElementSeacher.Create(c.Resolve<IRulesElementRepository>())));
+			container.RegisterType<ICommand,ShowRulesElementDetailsWindowCommand>();
+
+			var loadingWindow=new LoadingWindow();
+			loadingWindow.Loaded+=async (sender,eventArgs) =>
 			{
 				loadingWindow.SetStatusText("Loading rule elements...");
-				await Task.Factory.StartNew(() => repository=RulesElementsRepository.Create());
-			}
-			catch(IOException)
-			{
-				ShowErrorAndShutdown();
-			}
-			catch(InvalidOperationException)
-			{
-				ShowErrorAndShutdown();
-			}
+				try
+				{
+					await Task.Factory.StartNew(() => container.Resolve<IRulesElementRepository>());
+				}
+				catch(IOException)
+				{
+					ShowErrorAndShutdown();
+				}
+				catch(ResolutionFailedException)
+				{
+					ShowErrorAndShutdown();
+				}
+				loadingWindow.SetStatusText("Creating Lucene Index...");
+				await Task.Factory.StartNew(() => container.Resolve<IRulesElementSearcher>());
 
-			loadingWindow.SetStatusText("Creating Lucene Index...");
-			RulesElementSeacher searcher=null;
-			await Task.Factory.StartNew(() => searcher=RulesElementSeacher.Create(repository));
+				var viewModel=container.Resolve<RulesElementsCollectionViewModel>();
+				var mainWindow=new MainWindow(viewModel);
+				this.MainWindow=mainWindow;
 
-			var mainWindow=new MainWindow(searcher);
-			this.MainWindow=mainWindow;
-			mainWindow.Show();
+				loadingWindow.Close();
+				mainWindow.Show();
+			};
+			loadingWindow.Show();
 		}
 
 		private void ShowErrorAndShutdown()

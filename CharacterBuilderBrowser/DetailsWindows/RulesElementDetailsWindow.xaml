@@ -2,10 +2,9 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	   xmlns:cbb="clr-namespace:CharacterBuilderBrowser"
-        Title="{Binding Name}" Height="800" Width="600"
-	   DataContext="{Binding Element,RelativeSource={RelativeSource Self}}">
+        Title="{Binding Element.Name}" Height="800" Width="600">
 	<Window.Resources>
-		<cbb:RulesElementIdHyperlinkConverter x:Key="RulesElementIdHyperlinkConverter" />
+		<cbb:BindingProxy x:Key="BindingProxy" DataContext="{Binding}" />
 	</Window.Resources>
 	<Grid>
 		<Grid.RowDefinitions>
@@ -24,22 +23,22 @@
 			<ColumnDefinition />
 		</Grid.ColumnDefinitions>
 		<Label Grid.Row="0" Grid.Column="0" Content="Type:" FontWeight="Bold" />
-		<TextBox Grid.Row="0" Grid.Column="1" Style="{StaticResource ReadOnlyStyle}" Text="{Binding ElementType}" />
+		<TextBox Grid.Row="0" Grid.Column="1" Style="{StaticResource ReadOnlyStyle}" Text="{Binding Element.ElementType}" />
 		<Label Grid.Row="1" Grid.Column="0" Content="Id:" FontWeight="Bold" />
-		<TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource ReadOnlyStyle}" Text="{Binding Id}" />
+		<TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource ReadOnlyStyle}" Text="{Binding Element.Id}" />
 		<Label Grid.Row="2" Grid.Column="0" Content="Source:" FontWeight="Bold" />
-		<TextBox Grid.Row="2" Grid.Column="1" Style="{StaticResource ReadOnlyStyle}" Text="{Binding Source}" />
+		<TextBox Grid.Row="2" Grid.Column="1" Style="{StaticResource ReadOnlyStyle}" Text="{Binding Element.Source}" />
 		<Label Grid.Row="3" Grid.Column="0" Content="Last Updated:" FontWeight="Bold" />
-		<TextBox Grid.Row="3" Grid.Column="1" Style="{StaticResource ReadOnlyStyle}" Text="{Binding LastUpdated}" />
+		<TextBox Grid.Row="3" Grid.Column="1" Style="{StaticResource ReadOnlyStyle}" Text="{Binding Element.LastUpdated}" />
 		<Label Grid.Row="4" Grid.Column="0" Content="Prerequisites:" FontWeight="Bold" />
-		<TextBox Grid.Row="4" Grid.Column="1" Style="{StaticResource ReadOnlyStyle}" Text="{Binding Prerequisites}" />
+		<TextBox Grid.Row="4" Grid.Column="1" Style="{StaticResource ReadOnlyStyle}" Text="{Binding Element.Prerequisites}" />
 		<Label Grid.Row="5" Grid.Column="0" Content="Flavor Text:" FontWeight="Bold" />
-		<TextBox Grid.Row="5" Grid.Column="1" Style="{StaticResource ReadOnlyStyle}" Text="{Binding FlavorText}" />
+		<TextBox Grid.Row="5" Grid.Column="1" Style="{StaticResource ReadOnlyStyle}" Text="{Binding Element.FlavorText}" />
 		<Label Grid.Row="6" Grid.Column="0" Content="Description:" FontWeight="Bold" />
-		<TextBox Grid.Row="6" Grid.Column="1" Style="{StaticResource ReadOnlyStyle}" Text="{Binding Description}" />
+		<TextBox Grid.Row="6" Grid.Column="1" Style="{StaticResource ReadOnlyStyle}" Text="{Binding Element.Description}" />
 		<Label Grid.Row="7" Grid.Column="0" Content="Specific Rules:" FontWeight="Bold" />
 		<DataGrid Grid.Row="8" Grid.ColumnSpan="2"
-				ItemsSource="{Binding SpecificRules}"
+				ItemsSource="{Binding Element.SpecificRules}"
 				IsReadOnly="True"
 				AutoGenerateColumns="False"
 				HeadersVisibility="Column"
@@ -48,24 +47,23 @@
 				AlternatingRowBackground="Gainsboro"
 				AlternationCount="2">
 			<DataGrid.Resources>
-				<ResourceDictionary>
-					<Style x:Key="{x:Type DataGridCell}" TargetType="{x:Type DataGridCell}">
-						<Style.Triggers>
-							<Trigger Property="IsSelected" Value="True">
-								<Setter Property="Background" Value="{x:Null}" />
-								<Setter Property="BorderBrush" Value="{x:Null}" />
-								<Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource Self}, Path=Foreground}"/>
-							</Trigger>
-						</Style.Triggers>
-					</Style>
-				</ResourceDictionary>
+				<Style x:Key="{x:Type DataGridCell}" TargetType="{x:Type DataGridCell}">
+					<Style.Triggers>
+						<Trigger Property="IsSelected" Value="True">
+							<Setter Property="Background" Value="{x:Null}" />
+							<Setter Property="BorderBrush" Value="{x:Null}" />
+							<Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource Self}, Path=Foreground}"/>
+						</Trigger>
+					</Style.Triggers>
+				</Style>
+				<cbb:RulesElementIdHyperlinkConverter x:Key="RulesElementIdHyperlinkConverter" Repository="{Binding DataContext.Repository,Source={StaticResource BindingProxy}}" HyperlinkClickCommand="{Binding DataContext.ViewElementCommand,Source={StaticResource BindingProxy}}" />
 			</DataGrid.Resources>
 			<DataGrid.Columns>
 				<DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="Auto" />
 				<DataGridTemplateColumn Header="Description" Width="*">
 					<DataGridTemplateColumn.CellTemplate>
 						<ItemContainerTemplate>
-							<RichTextBox Style="{StaticResource RichReadOnlyStyle}" cbb:RichTextBoxExtensions.FormattedText="{Binding Description, Mode=OneWay,Converter={StaticResource RulesElementIdHyperlinkConverter}}" />
+							<RichTextBox Style="{StaticResource RichReadOnlyStyle}" cbb:RichTextBoxExtensions.FormattedText="{Binding Description,Converter={StaticResource RulesElementIdHyperlinkConverter}}" />
 						</ItemContainerTemplate>
 					</DataGridTemplateColumn.CellTemplate>
 				</DataGridTemplateColumn>

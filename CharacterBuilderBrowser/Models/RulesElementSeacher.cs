@@ -10,20 +10,25 @@ using Lucene.Net.Store;
 
 namespace CharacterBuilderBrowser
 {
-	public class RulesElementSeacher:IDisposable
+	public interface IRulesElementSearcher:IDisposable
 	{
-		private RulesElementsRepository repository;
+		void Index(IRulesElementRepository repository);
+		IDictionary<RulesElement,int> Search(string searchText);
+	}
+
+	public class LuceneRulesElementSeacher:IRulesElementSearcher
+	{
 		private Directory rulesElementIndex;
 
-		private RulesElementSeacher(RulesElementsRepository repository)
+		public LuceneRulesElementSeacher()
 		{
-			this.repository=repository;
+			rulesElementIndex=new RAMDirectory();
 		}
 
-		public static RulesElementSeacher Create(RulesElementsRepository repository)
+		public static LuceneRulesElementSeacher Create(IRulesElementRepository repository)
 		{
-			var searcher=new RulesElementSeacher(repository);
-			searcher.Index();
+			var searcher=new LuceneRulesElementSeacher();
+			searcher.Index(repository);
 			return searcher;
 		}
 
@@ -32,9 +37,8 @@ namespace CharacterBuilderBrowser
 			rulesElementIndex.Dispose();
 		}
 
-		private void Index()
+		public void Index(IRulesElementRepository repository)
 		{
-			rulesElementIndex=new RAMDirectory();
 			using(var indexWriter=new IndexWriter(rulesElementIndex,new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_30),IndexWriter.MaxFieldLength.LIMITED))
 			{
 				foreach(var element in repository.AllElements)

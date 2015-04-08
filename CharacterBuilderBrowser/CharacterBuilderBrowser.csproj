@@ -74,6 +74,15 @@
     <Reference Include="Lucene.Net.ObjectMapping">
       <HintPath>..\packages\Lucene.Net.ObjectMapping.1.0.3\lib\net40\Lucene.Net.ObjectMapping.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Practices.Unity">
+      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration">
+      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
+      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -93,12 +102,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Extensions\BindingProxy.cs" />
     <Compile Include="Extensions\RichTextBoxExtensions.cs" />
     <Compile Include="Extensions\RulesElementIdHyperlinkConverter.cs" />
+    <Compile Include="Extensions\ShowRulesElementDetailsWindowCommand.cs" />
     <Compile Include="LoadingWindow.xaml.cs">
       <DependentUpon>LoadingWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\RulesElement.cs" />
+    <Compile Include="Models\RulesElementDetailsViewModel.cs" />
+    <Compile Include="Models\RulesElementsCollectionViewModel.cs" />
+    <Compile Include="Models\RulesElementScoreSorter.cs" />
     <Compile Include="Models\RulesElementSeacher.cs" />
     <Compile Include="Models\RulesElementsRepository.cs" />
     <Compile Include="DetailsWindows\RulesElementDetailsWindow.xaml.cs">

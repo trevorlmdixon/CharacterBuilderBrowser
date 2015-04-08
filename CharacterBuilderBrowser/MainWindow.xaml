@@ -3,8 +3,7 @@
 	   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	   xmlns:cbb="clr-namespace:CharacterBuilderBrowser"
 	   Title="Character Builder Browser"
-	   Height="600" Width="800"
-	   DataContext="{Binding RelativeSource={RelativeSource Self}}">
+	   Height="600" Width="800">
 	<DockPanel>
 		<DockPanel DockPanel.Dock="Top">
 			<Label DockPanel.Dock="Left" Content="Filter:">
@@ -17,8 +16,8 @@
 					<TextBlock>
 						<TextBlock.Text>
 							<MultiBinding StringFormat="{}Displaying {0} of {1}">
-								<Binding Path="RulesElementsView.Count" />
-								<Binding Path="Repository.AllElements.Count" />
+								<Binding Path="RepositoryCollectionView.Count" />
+								<Binding Path="AllElementsCount" />
 							</MultiBinding>
 						</TextBlock.Text>
 					</TextBlock>
@@ -29,14 +28,17 @@
 			</Label>
 			<TextBox Text="{Binding FilterText,UpdateSourceTrigger=PropertyChanged,Delay=300}" />
 		</DockPanel>
-		<DataGrid ItemsSource="{Binding RulesElementsView}"
+		<DataGrid ItemsSource="{Binding RepositoryCollectionView}"
+				IsSynchronizedWithCurrentItem="True"
 				IsReadOnly="True"
 				AutoGenerateColumns="False"
 				HeadersVisibility="Column"
 				AlternatingRowBackground="Gainsboro"
 				AlternationCount="2"
-				SelectionMode="Single"
-				MouseDoubleClick="ViewElementDetails">
+				SelectionMode="Single">
+			<DataGrid.InputBindings>
+				<MouseBinding MouseAction="LeftDoubleClick" Command="{Binding ViewElementCommand}" CommandParameter="{Binding RepositoryCollectionView/}" />
+			</DataGrid.InputBindings>
 			<DataGrid.Columns>
 				<DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" />
 				<DataGridTextColumn Header="Type" Binding="{Binding ElementType}" Width="Auto" />
