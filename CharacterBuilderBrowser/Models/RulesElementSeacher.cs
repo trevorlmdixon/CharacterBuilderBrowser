@@ -19,6 +19,7 @@ namespace CharacterBuilderBrowser
 	public class LuceneRulesElementSeacher:IRulesElementSearcher
 	{
 		private Directory rulesElementIndex;
+		private int repositoryCount;
 
 		public LuceneRulesElementSeacher()
 		{
@@ -44,6 +45,7 @@ namespace CharacterBuilderBrowser
 				foreach(var element in repository.AllElements)
 				{
 					indexWriter.Add(element);
+					repositoryCount++;
 				}
 				indexWriter.Optimize();
 			}
@@ -58,8 +60,8 @@ namespace CharacterBuilderBrowser
 				{
 					parser=new MultiFieldQueryParser(Lucene.Net.Util.Version.LUCENE_30,reader.GetFieldNames(IndexReader.FieldOption.ALL).ToArray(),new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_30));
 				}
-				var result=searcher.Search<RulesElement>(parser.Parse(searchText),40000);
-				return result.ScoreDocs.ToDictionary(sd => searcher.Doc(sd.Doc).ToObject<RulesElement>(),sd=>(int)(sd.Score*40000));
+				var result=searcher.Search<RulesElement>(parser.Parse(searchText),repositoryCount);
+				return result.ScoreDocs.ToDictionary(sd => searcher.Doc(sd.Doc).ToObject<RulesElement>(),sd=>(int)(sd.Score*repositoryCount));
 			}
 		}
 	}
