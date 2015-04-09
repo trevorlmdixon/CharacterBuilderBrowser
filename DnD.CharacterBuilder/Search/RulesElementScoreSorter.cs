@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-namespace CharacterBuilderBrowser
+namespace DnD.CharacterBuilder
 {
 	public class RulesElementScoreSorter:IComparer
 	{

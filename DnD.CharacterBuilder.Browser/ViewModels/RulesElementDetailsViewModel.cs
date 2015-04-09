@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace CharacterBuilderBrowser
+namespace DnD.CharacterBuilder.Browser
 {
 	public class RulesElementDetailsViewModel
 	{

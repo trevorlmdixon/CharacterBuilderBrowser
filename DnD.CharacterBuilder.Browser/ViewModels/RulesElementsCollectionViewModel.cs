@@ -5,7 +5,7 @@ using System.Linq;
 using System.Windows.Data;
 using System.Windows.Input;
 
-namespace CharacterBuilderBrowser
+namespace DnD.CharacterBuilder.Browser
 {
 	public class RulesElementsCollectionViewModel
 	{

@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace CharacterBuilderBrowser
+namespace DnD.CharacterBuilder.Browser
 {
 	/// <summary>
 	/// Interaction logic for LoadingWindow.xaml

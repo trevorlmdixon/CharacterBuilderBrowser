@@ -5,14 +5,8 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace CharacterBuilderBrowser
+namespace DnD.CharacterBuilder
 {
-	public interface IRulesElementRepository
-	{
-		IEnumerable<RulesElement> AllElements { get; }
-		RulesElement Get(string id);
-	}
-
 	public class FileRulesElementsRepository:IRulesElementRepository
 	{
 		private string filePath;

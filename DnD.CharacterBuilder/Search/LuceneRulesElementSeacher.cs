@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Lucene.Net.Analysis.Standard;
 using Lucene.Net.Documents;
@@ -8,14 +7,8 @@ using Lucene.Net.QueryParsers;
 using Lucene.Net.Search;
 using Lucene.Net.Store;
 
-namespace CharacterBuilderBrowser
+namespace DnD.CharacterBuilder
 {
-	public interface IRulesElementSearcher:IDisposable
-	{
-		void Index(IRulesElementRepository repository);
-		IDictionary<RulesElement,int> Search(string searchText);
-	}
-
 	public class LuceneRulesElementSeacher:IRulesElementSearcher
 	{
 		private Directory rulesElementIndex;

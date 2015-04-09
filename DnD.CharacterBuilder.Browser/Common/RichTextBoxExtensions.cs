@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Documents;
 
-namespace CharacterBuilderBrowser
+namespace DnD.CharacterBuilder.Browser
 {
 	public static class RichTextBoxExtensions
 	{

@@ -2,9 +2,9 @@
 
 namespace DnD.CharacterBuilder.Browser
 {
-	public partial class RulesElementDetailsWindow:Window
+	public partial class BrowserWindow:Window
 	{
-		public RulesElementDetailsWindow(RulesElementDetailsViewModel model)
+		public BrowserWindow(RulesElementsCollectionViewModel model)
 		{
 			this.DataContext=model;
 			InitializeComponent();

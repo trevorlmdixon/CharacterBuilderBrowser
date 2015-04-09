@@ -1,25 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.Xml.Serialization;
 
-namespace CharacterBuilderBrowser
+namespace DnD.CharacterBuilder
 {
-	[XmlRoot("D20Rules")]
-	public class D20Rules
-	{
-		private Collection<RulesElement> rulesElements=new Collection<RulesElement>();
-
-		[XmlAttribute("game-system")]
-		public string GameSystem { get; set; }
-
-		[XmlElement("RulesElement")]
-		public Collection<RulesElement> RulesElements { get { return rulesElements; } }
-
-		public override string ToString()
-		{
-			return GameSystem;
-		}
-	}
-
 	public class RulesElement
 	{
 		private Collection<SpecificRule> specificRules=new Collection<SpecificRule>();
@@ -69,20 +52,6 @@ namespace CharacterBuilderBrowser
 		public override int GetHashCode()
 		{
 			return Id.GetHashCode();
-		}
-	}
-
-	public class SpecificRule
-	{
-		[XmlAttribute("name")]
-		public string Name { get; set; }
-
-		[XmlText]
-		public string Description { get; set; }
-
-		public override string ToString()
-		{
-			return Name;
 		}
 	}
 }

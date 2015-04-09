@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CharacterBuilderBrowser.Properties
+namespace DnD.CharacterBuilder.Browser.Properties
 {
 
 

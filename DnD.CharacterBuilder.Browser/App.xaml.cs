@@ -4,12 +4,12 @@ using System.Windows;
 using System.Windows.Input;
 using Microsoft.Practices.Unity;
 
-namespace CharacterBuilderBrowser
+namespace DnD.CharacterBuilder.Browser
 {
 	/// <summary>
 	/// Interaction logic for App.xaml
 	/// </summary>
-	public partial class Browser:Application
+	public partial class BrowserApplication:Application
 	{
 		protected override void OnStartup(StartupEventArgs e)
 		{
@@ -38,7 +38,7 @@ namespace CharacterBuilderBrowser
 				await Task.Factory.StartNew(() => container.Resolve<IRulesElementSearcher>());
 
 				var viewModel=container.Resolve<RulesElementsCollectionViewModel>();
-				var mainWindow=new MainWindow(viewModel);
+				var mainWindow=new BrowserWindow(viewModel);
 				this.MainWindow=mainWindow;
 
 				loadingWindow.Close();

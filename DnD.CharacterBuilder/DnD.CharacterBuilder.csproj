@@ -82,14 +82,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Rules Objects\D20Rules.cs" />
+    <Compile Include="Repository\IRulesElementRepository.cs" />
+    <Compile Include="Search\IRulesElementSearcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RulesElement.cs" />
-    <Compile Include="RulesElementScoreSorter.cs" />
-    <Compile Include="RulesElementSeacher.cs" />
-    <Compile Include="RulesElementsRepository.cs" />
+    <Compile Include="Rules Objects\RulesElement.cs" />
+    <Compile Include="Search\RulesElementScoreSorter.cs" />
+    <Compile Include="Search\LuceneRulesElementSeacher.cs" />
+    <Compile Include="Repository\FileRulesElementsRepository.cs" />
+    <Compile Include="Rules Objects\SpecificRule.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="Search\packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
