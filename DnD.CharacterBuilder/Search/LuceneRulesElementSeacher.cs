@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Lucene.Net.Analysis.Standard;
 using Lucene.Net.Documents;
@@ -9,7 +10,7 @@ using Lucene.Net.Store;
 
 namespace DnD.CharacterBuilder
 {
-	public class LuceneRulesElementSeacher:IRulesElementSearcher
+	public sealed class LuceneRulesElementSeacher:IRulesElementSearcher
 	{
 		private Directory rulesElementIndex;
 		private int repositoryCount;
@@ -33,7 +34,10 @@ namespace DnD.CharacterBuilder
 
 		public void Index(IRulesElementRepository repository)
 		{
-			using(var indexWriter=new IndexWriter(rulesElementIndex,new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_30),IndexWriter.MaxFieldLength.LIMITED))
+			if(repository==null) throw new ArgumentNullException("repository");
+
+			using(var analyzer=new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_30))
+			using(var indexWriter=new IndexWriter(rulesElementIndex,analyzer,IndexWriter.MaxFieldLength.LIMITED))
 			{
 				foreach(var element in repository.AllElements)
 				{
@@ -47,14 +51,12 @@ namespace DnD.CharacterBuilder
 		public IDictionary<RulesElement,int> Search(string searchText)
 		{
 			using(var searcher=new IndexSearcher(rulesElementIndex))
+			using(var analyzer=new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_30))
+			using(var reader=IndexReader.Open(rulesElementIndex,true))
 			{
-				QueryParser parser;
-				using(var reader=IndexReader.Open(rulesElementIndex,true))
-				{
-					parser=new MultiFieldQueryParser(Lucene.Net.Util.Version.LUCENE_30,reader.GetFieldNames(IndexReader.FieldOption.ALL).ToArray(),new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_30));
-				}
+				var parser=new MultiFieldQueryParser(Lucene.Net.Util.Version.LUCENE_30,reader.GetFieldNames(IndexReader.FieldOption.ALL).ToArray(),analyzer);
 				var result=searcher.Search<RulesElement>(parser.Parse(searchText),repositoryCount);
-				return result.ScoreDocs.ToDictionary(sd => searcher.Doc(sd.Doc).ToObject<RulesElement>(),sd=>(int)(sd.Score*repositoryCount));
+				return result.ScoreDocs.ToDictionary(sd => searcher.Doc(sd.Doc).ToObject<RulesElement>(),sd => (int)(sd.Score*repositoryCount));
 			}
 		}
 	}

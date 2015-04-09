@@ -37,17 +37,15 @@ namespace DnD.CharacterBuilder
 		private void Load()
 		{
 			using(var stream=File.OpenRead(filePath))
+			using(var xmlReader=XmlReader.Create(stream))
 			{
-				using(var xmlReader=XmlReader.Create(stream))
-				{
-					var xs=new XmlSerializer(typeof(D20Rules));
-					rules=(D20Rules)xs.Deserialize(xmlReader);
-					allElementsDictionary=rules.RulesElements.ToDictionary(e => e.Id);
-				}
+				var xs=new XmlSerializer(typeof(D20Rules));
+				rules=(D20Rules)xs.Deserialize(xmlReader);
+				allElementsDictionary=rules.RulesElements.ToDictionary(e => e.Id);
 			}
 		}
 
-		public RulesElement Get(string id)
+		public RulesElement GetElement(string id)
 		{
 			return allElementsDictionary.ContainsKey(id)?allElementsDictionary[id]:null;
 		}

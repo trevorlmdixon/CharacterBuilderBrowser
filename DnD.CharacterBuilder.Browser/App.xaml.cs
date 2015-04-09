@@ -47,7 +47,7 @@ namespace DnD.CharacterBuilder.Browser
 			loadingWindow.Show();
 		}
 
-		private void ShowErrorAndShutdown()
+		private static void ShowErrorAndShutdown()
 		{
 			MessageBox.Show("Could not load Character Builder data. Program will now exit.","Error",MessageBoxButton.OK,MessageBoxImage.Error);
 			Application.Current.Shutdown();

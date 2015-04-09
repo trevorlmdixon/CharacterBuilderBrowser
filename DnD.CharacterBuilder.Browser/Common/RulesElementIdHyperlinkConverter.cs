@@ -41,7 +41,7 @@ namespace DnD.CharacterBuilder.Browser
 				var runStr=runs[i];
 				if(i%2==1&&Repository!=null)
 				{
-					var element=Repository.Get(runStr);
+					var element=Repository.GetElement(runStr);
 					if(element!=null)
 					{
 						var link=new Hyperlink(new Run(element.Name));
