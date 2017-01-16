@@ -22,7 +22,7 @@
 			<ColumnDefinition Width="Auto" />
 			<ColumnDefinition />
 		</Grid.ColumnDefinitions>
-        <Button Grid.Row="0" Grid.Column="0" Content="Export" Command="{Binding ExportCommand}" CommandParameter="{Binding Element}"/>
+        <Button Grid.Row="0" Grid.Column="0" Content="Export" CommandParameter="{Binding Element}" Command="{Binding ExportCommand}"/>
         <!--<Label Grid.Row="0" Grid.Column="0" Content="Type:" FontWeight="Bold" />-->
 		<!--<TextBox Grid.Row="0" Grid.Column="1" Style="{StaticResource ReadOnlyStyle}" Text="{Binding Element.ElementType}" />-->
 		<Label Grid.Row="1" Grid.Column="0" Content="Id:" FontWeight="Bold" />
