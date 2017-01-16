@@ -30,7 +30,7 @@ namespace DnD.CharacterBuilder.Browser
 			var element=parameter as RulesElement;
 			if(element==null) return;
 
-			var viewModel=new RulesElementDetailsViewModel(element,repository,this);
+			var viewModel=new RulesElementDetailsViewModel(element,repository,this,new ExportRulesElementCommand());
 			var detailsWindow=new RulesElementDetailsWindow(viewModel);
 			detailsWindow.Show();
 		}

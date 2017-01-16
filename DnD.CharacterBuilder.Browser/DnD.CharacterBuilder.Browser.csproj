@@ -58,6 +58,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Common\BindingProxy.cs" />
+    <Compile Include="Common\ExportRulesElementCommand.cs" />
     <Compile Include="Common\RichTextBoxExtensions.cs" />
     <Compile Include="Common\RulesElementIdHyperlinkConverter.cs" />
     <Compile Include="Common\ShowRulesElementDetailsWindowCommand.cs" />
