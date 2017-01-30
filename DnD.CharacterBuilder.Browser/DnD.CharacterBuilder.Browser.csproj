@@ -62,6 +62,10 @@
     <Compile Include="Common\RichTextBoxExtensions.cs" />
     <Compile Include="Common\RulesElementIdHyperlinkConverter.cs" />
     <Compile Include="Common\ShowRulesElementDetailsWindowCommand.cs" />
+    <Compile Include="Common\SpecificRuleExportParser\EffectExportParser.cs" />
+    <Compile Include="Common\SpecificRuleExportParser\MissExportParser.cs" />
+    <Compile Include="Common\SpecificRuleExportParser\TargetExportParser.cs" />
+    <Compile Include="Common\SpecificRuleExportParser\HitExportParser.cs" />
     <Compile Include="Common\SpecificRuleExportParser\PowerUsageExportParser.cs" />
     <Compile Include="Common\SpecificRuleExportParser\KeywordsExportParser.cs" />
     <Compile Include="Common\SpecificRuleExportParser\ActionTypeExportParser.cs" />
