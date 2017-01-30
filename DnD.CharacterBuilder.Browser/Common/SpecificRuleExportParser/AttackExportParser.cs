@@ -18,13 +18,23 @@ namespace DnD.CharacterBuilder.Browser
        
         public override string parseSpecificRule(SpecificRule rule)
         {
+            string ability;
             string rvstring = "";
             rvstring += "--";
             rvstring += rule.Name;
-            rvstring += "|";
+            rvstring += ":|";
             rvstring += rule.Description;
+
+            ability = rule.Description.TrimStart(' ');
+            ability = ability.Substring(0, ability.IndexOf(' '));
+
             rvstring += "\n";
-            rvstring += "--Roll|[[1d20]]\n";
+            rvstring += "^^";
+            rvstring += "\n";
+            rvstring += "[[1d20 + @{";
+            rvstring += ability;
+            rvstring += "-mod}]]\n";
+
 
             return rvstring;
         }

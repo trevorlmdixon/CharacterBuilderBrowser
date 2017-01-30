@@ -14,7 +14,7 @@ namespace DnD.CharacterBuilder.Browser
             string rvstring = "";
             rvstring += "--";
             rvstring += rule.Name;
-            rvstring += "|";
+            rvstring += ":|";
             rvstring += rule.Description;
             rvstring += "\n";
             return rvstring;
