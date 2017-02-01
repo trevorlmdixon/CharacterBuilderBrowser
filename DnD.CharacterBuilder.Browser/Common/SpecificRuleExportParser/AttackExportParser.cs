@@ -29,10 +29,9 @@ namespace DnD.CharacterBuilder.Browser
             ability = ability.Substring(0, ability.IndexOf(' '));
 
             formatRule.Append("\n^^");
-            formatRule.Append("^^");
             formatRule.Append("[[1d20 + @{");
             formatRule.Append(ability);
-            formatRule.Append("-mod}]]\n");
+            formatRule.Append("-mod} + @{weapon-1-prof}]]\n");
 
 
             return formatRule.ToString();

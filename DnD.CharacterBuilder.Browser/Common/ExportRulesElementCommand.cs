@@ -32,7 +32,6 @@ namespace DnD.CharacterBuilder.Browser
 
             exportBuilder.Append("!power {{\n --format|dnd4e\n");
             
-
             exportBuilder.Append("--name|");
             exportBuilder.Append(rulesElement.Name);
             exportBuilder.Append("\n");

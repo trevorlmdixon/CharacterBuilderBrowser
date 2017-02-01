@@ -20,52 +20,40 @@ namespace DnD.CharacterBuilder.Browser
         public override string parseSpecificRule(SpecificRule rule)
         {
             var formatRule = new StringBuilder();
-            var hitText = "";
+            var formatDamage = new StringBuilder();
+            var hitText = rule.Description;
+
+            if (hitText.Contains('\n'))
+            {
+                hitText = hitText.Substring(0, rule.Description.IndexOf("\n"));
+            }
+
+            Match damageExpression = Regex.Match(hitText, @"\d.*damage");
+
+            if(damageExpression.Success == true)
+            {
+                var damageText = damageExpression.Value;
+                hitText = hitText.Remove(hitText.IndexOf(damageText), damageText.Length);
+
+                var expressionFinders = System.Reflection.Assembly.GetExecutingAssembly().GetTypes().Where(t => t != typeof(ExpressionFinder) && typeof(ExpressionFinder).IsAssignableFrom(t));
+
+                formatDamage.Append("[[");
+                foreach (var finder in expressionFinders.Select(t => Activator.CreateInstance(t) as ExpressionFinder).OrderBy(t => t.order))
+                {
+                    finder.findExpression(damageText);
+                    if (finder.convertedString() != null)
+                    {
+                        formatDamage.Append(finder.convertedString());
+                    }
+                }
+                formatDamage.Append(" damage");
+            }
 
             formatRule.Append("--");
             formatRule.Append(rule.Name);
             formatRule.Append(":|");
-
-            if (rule.Description.Contains('\n'))
-            {
-                hitText = rule.Description.Substring(0, rule.Description.IndexOf("\n"));
-            }
-            else
-            {
-                hitText = rule.Description;
-            }
-            
-
-            Match dieMatch = Regex.Match(hitText, @"\dd\d", RegexOptions.IgnoreCase);
-            Match weaponMatch = Regex.Match(hitText, @"\d\[W\]", RegexOptions.IgnoreCase);
-            Match modMatch = Regex.Match(hitText, @"\S+ modifier", RegexOptions.IgnoreCase);
-
-            if(dieMatch.Success == true)
-            {
-                formatRule.Append("[[" + dieMatch.Value);
-
-                if (modMatch.Success == true)
-                {
-                    var ability = modMatch.Value.Substring(0, modMatch.Value.IndexOf(' '));
-                    formatRule.Append(" + @{" + ability + "-mod}");
-                }
-
-                formatRule.Append("]]");
-            }
-
-            if (weaponMatch.Success == true)
-            {
-                formatRule.Append("[[" + weaponMatch.Value.Substring(0, weaponMatch.Value.IndexOf('[')) + "d8");
-
-                if (modMatch.Success == true)
-                {
-                    var ability = modMatch.Value.Substring(0, modMatch.Value.IndexOf(' '));
-                    formatRule.Append(" + @{" + ability + "-mod}");
-                }
-
-                formatRule.Append("]]");
-            }
-
+            formatRule.Append(formatDamage);
+            formatRule.Append(hitText);
             formatRule.Append("\n");
             return formatRule.ToString();
             
