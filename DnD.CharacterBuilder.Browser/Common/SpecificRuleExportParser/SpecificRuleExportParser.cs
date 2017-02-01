@@ -11,13 +11,14 @@ namespace DnD.CharacterBuilder.Browser
         public abstract int order { get; }
         public virtual string parseSpecificRule(SpecificRule rule)
         {
-            string rvstring = "";
-            rvstring += "--";
-            rvstring += rule.Name;
-            rvstring += ":|";
-            rvstring += rule.Description;
-            rvstring += "\n";
-            return rvstring;
+            var formatRule = new StringBuilder();
+            formatRule.Append("");
+            formatRule.Append("--");
+            formatRule.Append(rule.Name);
+            formatRule.Append(":|");
+            formatRule.Append(rule.Description);
+            formatRule.Append("\n");
+            return formatRule.ToString();
         }
         public abstract string specificRuleName { get; }
     }

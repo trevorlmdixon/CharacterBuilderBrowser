@@ -18,12 +18,12 @@ namespace DnD.CharacterBuilder.Browser
 
         public override string parseSpecificRule(SpecificRule rule)
         {
-            string rvstring = "";
-            rvstring += "--leftsub|";
-            rvstring += rule.Description;
-            rvstring += "\n";
+            var formatRule = new StringBuilder();
+            formatRule.Append("--leftsub|");
+            formatRule.Append(rule.Description);
+            formatRule.Append("\n");
 
-            return rvstring;
+            return formatRule.ToString();
         }
 
         public override string specificRuleName

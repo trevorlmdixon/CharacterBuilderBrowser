@@ -18,29 +18,29 @@ namespace DnD.CharacterBuilder.Browser
 
         public override string parseSpecificRule(SpecificRule rule)
         {
-            string rvstring = "";
-            rvstring += "--";
-            rvstring += rule.Name;
-            rvstring += ":|";
-            rvstring += rule.Description;
-            rvstring += "\n";
+            var formatRule = new StringBuilder();
+            formatRule.Append("--");
+            formatRule.Append(rule.Name);
+            formatRule.Append(":|");
+            formatRule.Append(rule.Description);
+            formatRule.Append("\n");
 
-            rvstring += "--format|";
+            formatRule.Append("--format|");
             if(rule.Description[1] == 'A') {
-                rvstring += "at-will";
+                formatRule.Append("at-will");
             }
             if (rule.Description[1] == 'E')
             {
-                rvstring += "encounter";
+                formatRule.Append("encounter");
             }
             if (rule.Description[1] == 'D')
             {
-                rvstring += "daily";
+                formatRule.Append("daily");
             }
-            rvstring += "\n";
+            formatRule.Append("\n");
 
 
-            return rvstring;
+            return formatRule.ToString();
         }
 
         public override string specificRuleName
