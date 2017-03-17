@@ -8,24 +8,17 @@ namespace DnD.CharacterBuilder.Browser
 {
     class AttackTypeExportParser : SpecificRuleExportParser
     {
-        public override int order
-        {
-            get
-            {
-                return 2;
-            }
-        }
-
-        public override string parseSpecificRule(SpecificRule rule)
+        public override string ParseSpecificRule(SpecificRule rule)
         {
             var formatRule = new StringBuilder();
             formatRule.Append("--rightsub|");
-            formatRule.Append(rule.Description);
+            var description = RegexChecker(rule.Description);
+            formatRule.Append(description);
             formatRule.Append("\n");
             return formatRule.ToString();
         }
 
-        public override string specificRuleName
+        public override string SpecificRuleName
         {
             get
             {

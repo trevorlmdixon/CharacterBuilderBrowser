@@ -62,17 +62,7 @@
     <Compile Include="Common\RichTextBoxExtensions.cs" />
     <Compile Include="Common\RulesElementIdHyperlinkConverter.cs" />
     <Compile Include="Common\ShowRulesElementDetailsWindowCommand.cs" />
-    <Compile Include="Common\SpecificRuleExportParser\EffectExportParser.cs" />
-    <Compile Include="Common\SpecificRuleExportParser\ExpressionFinders\DamageModifierFinder.cs" />
-    <Compile Include="Common\SpecificRuleExportParser\ExpressionFinders\DamageTypeFinder.cs" />
-    <Compile Include="Common\SpecificRuleExportParser\ExpressionFinders\WeaponFinder.cs" />
-    <Compile Include="Common\SpecificRuleExportParser\ExpressionFinders\DieFinder.cs" />
-    <Compile Include="Common\SpecificRuleExportParser\ExpressionFinders\ExpressionFinder.cs" />
-    <Compile Include="Common\SpecificRuleExportParser\MissExportParser.cs" />
-    <Compile Include="Common\SpecificRuleExportParser\TargetExportParser.cs" />
-    <Compile Include="Common\SpecificRuleExportParser\HitExportParser.cs" />
     <Compile Include="Common\SpecificRuleExportParser\PowerUsageExportParser.cs" />
-    <Compile Include="Common\SpecificRuleExportParser\KeywordsExportParser.cs" />
     <Compile Include="Common\SpecificRuleExportParser\ActionTypeExportParser.cs" />
     <Compile Include="Common\SpecificRuleExportParser\AttackExportParser.cs" />
     <Compile Include="Common\SpecificRuleExportParser\AttackTypeExportParser.cs" />

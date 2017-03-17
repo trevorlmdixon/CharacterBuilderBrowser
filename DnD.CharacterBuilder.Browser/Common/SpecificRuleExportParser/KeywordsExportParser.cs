@@ -8,15 +8,7 @@ namespace DnD.CharacterBuilder.Browser
 {
     class KeywordsExportParser : SpecificRuleExportParser
     {
-        public override int order
-        {
-            get
-            {
-                return 3;
-            }
-        }
-
-        public override string specificRuleName
+        public override string SpecificRuleName
         {
             get
             {

@@ -8,15 +8,7 @@ namespace DnD.CharacterBuilder.Browser
 {
     class AttackExportParser : SpecificRuleExportParser
     {
-        public override int order
-        {
-            get
-            {
-                return 5;
-            }
-        }
-       
-        public override string parseSpecificRule(SpecificRule rule)
+        public override string ParseSpecificRule(SpecificRule rule)
         {
             var formatRule = new StringBuilder();
 
@@ -24,20 +16,37 @@ namespace DnD.CharacterBuilder.Browser
             formatRule.Append(rule.Name);
             formatRule.Append(":|");
             formatRule.Append(rule.Description);
+            formatRule.Append("\n");
 
-            var ability = rule.Description.TrimStart(' ');
+            /*
+            var abilities = rule.Description.TrimStart(' ');
             ability = ability.Substring(0, ability.IndexOf(' '));
+            */
 
-            formatRule.Append("\n^^");
-            formatRule.Append("[[1d20 + @{");
-            formatRule.Append(ability);
-            formatRule.Append("-mod} + @{weapon-1-prof}]]\n");
+            formatRule.Append("--Attack Roll:|");
+            formatRule.Append("[[1d20]] + ");
 
+            var abilities = rule.Description.Split(' ');
+            var i = 1;
+            while (abilities[i] != "vs.") {
+                if (abilities[i] != "or")
+                {
+                    formatRule.Append("[[@{");
+                    formatRule.Append(abilities[i]);
+                    formatRule.Append("-mod}]](" + abilities[i].Substring(0,3).ToUpper() + ")");
+                    if(abilities[i+1] != "vs.")
+                    {
+                        formatRule.Append(" or ");
+                    }
+                }
+                i++;
+            }
+            formatRule.Append(" + [[@{weapon-1-prof}]](Prof)\n");
 
             return formatRule.ToString();
         }
 
-        public override string specificRuleName
+        public override string SpecificRuleName
         {
             get
             {

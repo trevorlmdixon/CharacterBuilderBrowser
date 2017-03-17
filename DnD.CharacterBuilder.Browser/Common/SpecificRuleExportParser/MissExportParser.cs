@@ -8,15 +8,7 @@ namespace DnD.CharacterBuilder.Browser
 {
     class MissExportParser : SpecificRuleExportParser
     {
-        public override int order
-        {
-            get
-            {
-                return 9;
-            }
-        }
-
-        public override string specificRuleName
+        public override string SpecificRuleName
         {
             get
             {

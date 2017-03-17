@@ -8,22 +8,17 @@ namespace DnD.CharacterBuilder.Browser
 {
     class PowerUsageExportParser : SpecificRuleExportParser
     {
-        public override int order
-        {
-            get
-            {
-                return 4;
-            }
-        }
-
-        public override string parseSpecificRule(SpecificRule rule)
+        public override string ParseSpecificRule(SpecificRule rule)
         {
             var formatRule = new StringBuilder();
+
+            /*
             formatRule.Append("--");
             formatRule.Append(rule.Name);
             formatRule.Append(":|");
             formatRule.Append(rule.Description);
             formatRule.Append("\n");
+            */
 
             formatRule.Append("--format|");
             if(rule.Description[1] == 'A') {
@@ -43,7 +38,7 @@ namespace DnD.CharacterBuilder.Browser
             return formatRule.ToString();
         }
 
-        public override string specificRuleName
+        public override string SpecificRuleName
         {
             get
             {

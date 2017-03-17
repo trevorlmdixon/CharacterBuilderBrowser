@@ -24,11 +24,17 @@ namespace DnD.CharacterBuilder.Browser
 
         public void Execute(object parameter)
         {
-            var rulesElement = parameter as RulesElement;
-            var specificRuleLookup = rulesElement.SpecificRules.ToDictionary(sr => sr.Name);
-            var exportBuilder = new StringBuilder();
+            // var parserTypes = System.Reflection.Assembly.GetExecutingAssembly().GetTypes().Where(t => t != typeof(SpecificRuleExportParser) && typeof(SpecificRuleExportParser).IsAssignableFrom(t));
+            // var specificRuleLookup = rulesElement.SpecificRules.ToDictionary(sr => sr.Name);
 
-            var parserTypes = System.Reflection.Assembly.GetExecutingAssembly().GetTypes().Where(t => t != typeof(SpecificRuleExportParser) && typeof(SpecificRuleExportParser).IsAssignableFrom(t));
+
+            //dictionary keyed on specific rule names val is parser
+            //iterate through the specific rules, looking up the parser for each specific rule and using it if there is such a parser, otherwise use the generic parser
+
+            var rulesElement = parameter as RulesElement;
+            var exportBuilder = new StringBuilder();
+            var parserTypes = System.Reflection.Assembly.GetExecutingAssembly().GetTypes().Where(t => typeof(SpecificRuleExportParser).IsAssignableFrom(t)).Select(t => Activator.CreateInstance(t) as SpecificRuleExportParser).ToDictionary(p => p.SpecificRuleName);
+
 
             exportBuilder.Append("!power {{\n --format|dnd4e\n");
             
@@ -41,13 +47,16 @@ namespace DnD.CharacterBuilder.Browser
             exportBuilder.Append("\n");
 
 
-            foreach (var parser in parserTypes.Select(t => Activator.CreateInstance(t) as SpecificRuleExportParser).OrderBy(t => t.order))
+            foreach (var specRule in rulesElement.SpecificRules)
             {
-                if (specificRuleLookup.ContainsKey(parser.specificRuleName))
+                if (parserTypes.ContainsKey(specRule.Name)){
+                    var parser = parserTypes[specRule.Name];
+                    exportBuilder.Append(parser.ParseSpecificRule(specRule));
+                }
+                else
                 {
-                    SpecificRule currSR = specificRuleLookup[parser.specificRuleName];
-                    var result = parser.parseSpecificRule(currSR);
-                    exportBuilder.Append(result);
+                    var parser = parserTypes["Generic"];
+                    exportBuilder.Append(parser.ParseSpecificRule(specRule));
                 }
             }
 
