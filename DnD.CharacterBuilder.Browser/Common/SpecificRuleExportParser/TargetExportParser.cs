@@ -11,9 +11,13 @@ namespace DnD.CharacterBuilder.Browser
         public override string ParseSpecificRule(SpecificRule rule)
         {
             var formatRule = new StringBuilder();
-            formatRule.Append("--rightsub|");
+            formatRule.Append("--");
+            formatRule.Append(rule.Name);
+            formatRule.Append(":|");
+
             var description = RegexChecker(rule.Description);
             formatRule.Append(description);
+
             formatRule.Append("\n");
             return formatRule.ToString();
         }
