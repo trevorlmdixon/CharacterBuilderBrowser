@@ -28,7 +28,7 @@ namespace DnD.CharacterBuilder.Browser
             }
         }
 
-        protected string RegexChecker(string description)
+        static protected string RegexChecker(string description)
         {
             if (description.Contains('\n'))
             {
@@ -58,17 +58,18 @@ namespace DnD.CharacterBuilder.Browser
             }
 
             var modifierExpression = Regex.Match(description, @"\S+ modifier", RegexOptions.IgnoreCase);
-            if (modifierExpression.Success == true)
+            while(modifierExpression.Success == true)
             {
                 var ability = modifierExpression.Value.Substring(0, modifierExpression.Value.IndexOf(' '));
                 var value = modifierExpression.Value;
 
                 var yourModifierExpression = Regex.Match(description, @"your \S+ modifier", RegexOptions.IgnoreCase);
-                if (yourModifierExpression.Success == true)
+                if (yourModifierExpression.Success == true && yourModifierExpression.Value.Contains(value))
                 {
                     value = yourModifierExpression.Value;
                 }
                 description = description.Replace(value, "[[@{" + ability + "-mod}]](" + ability.Substring(0,3).ToUpper() + ")");
+                modifierExpression = Regex.Match(description, @"\S+ modifier", RegexOptions.IgnoreCase);
             }
 
             return description;

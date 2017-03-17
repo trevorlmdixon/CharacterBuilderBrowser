@@ -67,6 +67,7 @@
     <Compile Include="Common\SpecificRuleExportParser\AttackExportParser.cs" />
     <Compile Include="Common\SpecificRuleExportParser\AttackTypeExportParser.cs" />
     <Compile Include="Common\SpecificRuleExportParser\SpecificRuleExportParser.cs" />
+    <Compile Include="Common\SpecificRuleExportParser\TargetExportParser.cs" />
     <Compile Include="Windows\LoadingWindow.xaml.cs">
       <DependentUpon>LoadingWindow.xaml</DependentUpon>
     </Compile>
