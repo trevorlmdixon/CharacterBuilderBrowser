@@ -19,6 +19,10 @@ namespace DnD.CharacterBuilder.Browser
             formatRule.Append(description);
 
             formatRule.Append("\n");
+
+           
+            
+
             return formatRule.ToString();
         }
         public override string SpecificRuleName
